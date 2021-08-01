@@ -1,10 +1,10 @@
 <template>
   <div id="root_div">
     <!--main div :start-->
-    <div :class="mini ? 'not_move' : 'move'">
+    <div elevation="0" :class="mini ? 'not_move' : 'move'">
       <!--top bar :start-->
       <template>
-        <v-toolbar flat>
+        <v-toolbar elevation="0" flat>
           <v-text-field
             flat
             hide-details
@@ -58,8 +58,10 @@
         </v-card>
       </template>
       <!--dropdown panel :end-->
+      <Overview/>
     </div>
     <!--main div :end-->
+    
 
     <!--Navigation panel :start-->
     <template>
@@ -181,7 +183,11 @@
 </template>
 
 <script>
+import Overview from "@/components/Overview.vue";
 export default {
+  components: {
+    Overview,
+  },
   data() {
     return {
       drawer: true,
