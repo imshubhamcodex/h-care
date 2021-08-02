@@ -1,10 +1,14 @@
 <template>
   <div id="root_div">
     <!--main div :start-->
-    <div elevation="0" :class="mini ? 'not_move' : 'move'">
+    <div
+      elevation="0"
+      :class="mini ? 'not_move' : 'move'"
+      style="background-color: rgba(192, 192, 192, 0.2)"
+    >
       <!--top bar :start-->
       <template>
-        <v-toolbar elevation="0" flat>
+        <v-toolbar elevation="0" flat style="z-index: 9">
           <v-text-field
             flat
             hide-details
@@ -12,7 +16,7 @@
             prepend-inner-icon="mdi-magnify"
             solo-inverted
             light
-            style="margin-right: 50px"
+            style="margin-right: 50px;margin-left:-25px;"
           ></v-text-field>
 
           <v-icon style="margin-right: 15px">mdi-bell</v-icon>
@@ -58,10 +62,9 @@
         </v-card>
       </template>
       <!--dropdown panel :end-->
-      <Overview/>
+      <Overview :drawer_state="mini" />
     </div>
     <!--main div :end-->
-    
 
     <!--Navigation panel :start-->
     <template>
@@ -197,7 +200,7 @@ export default {
           title: "Add Patient",
           icon: "mdi-book-plus",
           id: "mdi-book-plus1",
-          color: "cyan",
+          color: "purple",
         },
         {
           title: "Add Doctor",
@@ -209,31 +212,31 @@ export default {
           title: "Overview",
           icon: "mdi-chart-pie",
           id: "mdi-chart-pie2",
-          color: "cyan",
+          color: "darkorange",
         },
         {
           title: "Patient",
           icon: "mdi-account",
           id: "mdi-account3",
-          color: "cyan",
+          color: "red",
         },
         {
           title: "Department",
           icon: "mdi-home-city",
           id: "mdi-home-city4",
-          color: "cyan",
+          color: "green",
         },
         {
           title: "Doctor",
           icon: "mdi-doctor",
           id: "mdi-doctor5",
-          color: "cyan",
+          color: "sienna",
         },
         {
           title: "History",
           icon: "mdi-history",
           id: "mdi-history6",
-          color: "cyan",
+          color: "blue",
         },
       ],
       mini: true,
@@ -262,20 +265,20 @@ export default {
 
 <style scoped>
 #root_div {
-  padding-left: 45px;
+  padding-left: 36px;
+  padding-right: 0;
 }
 .move {
   transform: translateX(210px);
-  width: 80vw;
+  width: 82vw;
+  transition: all ease 0.2s;
 }
 .not_move {
   transform: translateX(20px);
-  width: 94vw;
+  width: 95.5vw;
+  transition: all ease 0.2s;
 }
-
 @media (max-width: 420px) {
-  .move {
-  }
   .not_move {
     width: 90vw !important;
   }
@@ -284,12 +287,10 @@ export default {
 
 <style>
 .v-sheet.v-toolbar {
-  height: 53px !important;
-  margin-left: -13px !important ;
+  height: 56.2px !important;
 }
 .v-toolbar__content {
-  height: 53px !important;
-  margin-left: -20px !important;
+  height: 56.2px !important;
 }
 .theme--light.v-text-field--solo-inverted > .v-input__control > .v-input__slot {
   background: transparent !important;
