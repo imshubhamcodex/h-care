@@ -16,7 +16,7 @@
             prepend-inner-icon="mdi-magnify"
             solo-inverted
             light
-            style="margin-right: 50px;margin-left:-25px;"
+            style="margin-right: 50px; margin-left: -25px"
           ></v-text-field>
 
           <v-icon style="margin-right: 15px">mdi-bell</v-icon>
@@ -36,7 +36,7 @@
       <template>
         <v-card
           v-if="dropdown"
-          style="position: absolute; top: 56px; right: 5px;z-index:999"
+          style="position: absolute; top: 56px; right: 5px; z-index: 999"
           class="mx-auto"
           min-width="170"
           tile
@@ -100,7 +100,9 @@
               @click="navigate(item)"
             >
               <v-list-item-icon>
-                <v-icon :id="item.id">{{ item.icon }}</v-icon>
+                <v-icon class="side_nav_icon" :id="item.id">{{
+                  item.icon
+                }}</v-icon>
               </v-list-item-icon>
 
               <v-list-item-content
@@ -186,6 +188,7 @@
 </template>
 
 <script>
+import gsap from "gsap";
 import Overview from "@/components/Overview.vue";
 export default {
   components: {
@@ -260,6 +263,27 @@ export default {
       });
     },
   },
+
+  mounted() {
+    let tl = gsap.timeline();
+    tl.fromTo(
+      ".side_nav_icon",
+      {
+        duration: 1.2,
+        y: -50,
+        opacity: 0,
+        ease: "Expo.easeOut",
+        stagger: 0.1,
+      },
+      {
+        duration: 1.2,
+        y: 0,
+        opacity: 1,
+        ease: "Expo.easeOut",
+        stagger: 0.1,
+      }
+    );
+  },
 };
 </script>
 
@@ -277,6 +301,9 @@ export default {
   transform: translateX(20px);
   width: 95.5vw;
   transition: all ease 0.2s;
+}
+.side_nav_icon {
+  opacity: 0;
 }
 @media (max-width: 420px) {
   .not_move {

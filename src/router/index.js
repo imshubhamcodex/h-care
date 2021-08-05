@@ -14,7 +14,6 @@ const routes = [
     name: "db",
     component: () => import("../views/DB.vue"),
   },
-
 ];
 
 const router = new VueRouter({

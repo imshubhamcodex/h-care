@@ -3,7 +3,7 @@
     <!---parent div start-->
     <div class="grid lg:grid-cols-4">
       <!---------->
-      <div class="w-full p-4 lg:w-75">
+      <div class="w-full p-4 lg:w-75 top_row">
         <div
           cols="12"
           sm="3"
@@ -33,7 +33,7 @@
         </div>
       </div>
       <!-------->
-      <div class="w-full p-4 lg:w-75">
+      <div class="w-full p-4 lg:w-75 top_row">
         <div
           cols="12"
           sm="3"
@@ -63,7 +63,7 @@
         </div>
       </div>
       <!-------->
-      <div class="w-full p-4 lg:w-75">
+      <div class="w-full p-4 lg:w-75 top_row">
         <div
           cols="12"
           sm="3"
@@ -93,7 +93,7 @@
         </div>
       </div>
       <!----------->
-      <div class="w-full p-4 lg:w-75">
+      <div class="w-full p-4 lg:w-75 top_row">
         <div
           cols="12"
           sm="3"
@@ -129,9 +129,12 @@
     <!---second row :start-->
     <div class="grid lg:grid-cols-4">
       <div class="col-start-1 col-span-3 p-6">
-        <div class="bg-white p-6 shadow-lg flex" style="border-radius: 7px">
+        <div
+          class="bg-white p-6 shadow-lg flex second_row"
+          style="border-radius: 7px"
+        >
           <canvas height="300px" width="600px" id="bar" class="mr-5"></canvas>
-          <div class="relative">
+          <div class="relative second_row">
             <div style="float: right" class="mx-6 pb-6 mt-1">
               Show
               <span class="font-bold"
@@ -160,7 +163,7 @@
           </div>
         </div>
       </div>
-      <div class="p-6">
+      <div class="p-6 second_row">
         <div class="bg-white p-6 shadow-lg" style="border-radius: 7px">
           <div class="relative">
             <div class="mx-6 pb-6 mt-1">
@@ -242,6 +245,7 @@
 </template>
 
 <script>
+import gsap from "gsap";
 import Chart from "chart.js/auto";
 export default {
   props: ["drawer_state"],
@@ -499,6 +503,45 @@ export default {
     },
   },
   mounted() {
+    let tl = gsap.timeline();
+    tl.fromTo(
+      ".top_row",
+      {
+        duration: 1.2,
+        y: -150,
+        opacity: 0,
+        ease: "Expo.easeOut",
+        stagger: 0.1,
+      },
+      {
+        duration: 1.2,
+        y: 0,
+        opacity: 1,
+        ease: "Expo.easeOut",
+        stagger: 0.1,
+      },
+      "+=0.5"
+    ); //second_row
+
+    tl.fromTo(
+      ".second_row",
+      {
+        duration: 1.5,
+        y: -100,
+        opacity: 0.1,
+        ease: "Expo.easeOut",
+        stagger: 0.1,
+      },
+      {
+        duration: 1.5,
+        y: 0,
+        opacity: 1,
+        ease: "Expo.easeOut",
+        stagger: 0.1,
+      },
+      "-=2"
+    );
+
     this.barChart();
     this.doughnutChart();
     this.linechart();
@@ -517,7 +560,6 @@ export default {
         document.getElementById("bar").style.height = "250px";
         document.getElementById("linechart").style.height = "250px";
         document.getElementById("doughnut_gender").style.height = "250px";
-
 
         document.getElementById("division").style.maxHeight = "140px";
         document.getElementById("division").style.height = "140px";
@@ -542,4 +584,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.top_row {
+  opacity: 0;
+}
+</style>
