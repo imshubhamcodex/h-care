@@ -36,7 +36,7 @@
       <template>
         <v-card
           v-if="dropdown"
-          style="position: absolute; top: 56px; right: 5px"
+          style="position: absolute; top: 56px; right: 5px;z-index:999"
           class="mx-auto"
           min-width="170"
           tile

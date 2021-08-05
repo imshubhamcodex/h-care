@@ -131,10 +131,61 @@
       <div class="col-start-1 col-span-3 p-6">
         <div class="bg-white p-6 shadow-lg flex" style="border-radius: 7px">
           <canvas height="300px" width="600px" id="bar" class="mr-5"></canvas>
-          <canvas height="300px" width="290px" id="doughnut"></canvas>
+          <div class="relative">
+            <div style="float: right" class="mx-6 pb-6 mt-1">
+              Show
+              <span class="font-bold"
+                >by month
+                <v-icon
+                  class="ml-3"
+                  @click="P_in_out_dropdown = !P_in_out_dropdown"
+                  >{{
+                    P_in_out_dropdown ? "mdi-chevron-up" : "mdi-chevron-down"
+                  }}</v-icon
+                ></span
+              >
+            </div>
+            <canvas height="300px" width="290px" id="doughnut"></canvas>
+            <v-icon
+              class=""
+              style="
+                top: 48.5%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                position: absolute;
+                zoom: 2;
+              "
+              >{{ "mdi-account-group" }}</v-icon
+            >
+          </div>
         </div>
       </div>
-      <div class="p-6">boss</div>
+      <div class="p-6">
+        <div class="bg-white p-6 shadow-lg" style="border-radius: 7px">
+          <div class="relative">
+            <div class="mx-6 pb-6 mt-1">
+              <h1 class="font-bold text-sm">Patients by Gender</h1>
+            </div>
+            <canvas
+              class="-ml-7"
+              height="300px"
+              width="290px"
+              id="doughnut_gender"
+            ></canvas>
+            <v-icon
+              class=""
+              style="
+                top: 48.5%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                position: absolute;
+                zoom: 2;
+              "
+              >{{ "mdi-gender-male-female" }}</v-icon
+            >
+          </div>
+        </div>
+      </div>
     </div>
     <!---second row :end-->
 
@@ -152,24 +203,33 @@
             <v-icon class="ml-12">mdi-chevron-down</v-icon>
           </div>
           <v-divider></v-divider>
-          <div style="color: #d3d3d3" class="p-6 flex">
-            <v-icon style="color: #d3d3d3">mdi-home</v-icon>
-            <h2 class="ml-8">DIVISION</h2>
-            <h2 class="ml-16 ml-2">PT.</h2>
+          <div style="color: #d3d3d3" class="pl-4 pt-4 pb-4 flex">
+            <div>
+              <v-icon style="color: #d3d3d3">mdi-home</v-icon>
+            </div>
+            <div>
+              <h2 class="pl-2 pt-1">DIVISION</h2>
+            </div>
+            <div>
+              <h2 id="pt" class="ml-16 pl-11 mt-1">PT.</h2>
+            </div>
           </div>
           <v-divider></v-divider>
-          <div style="height: 203px; max-height: 203px ;overflow-y:scroll;">
+          <div
+            id="division"
+            style="height: 215px; max-height: 215px; overflow-y: scroll"
+          >
             <v-list-item v-for="item in items" :key="item.id">
               <v-list-item-icon>
                 <v-icon style="color: grey">{{ item.icon }}</v-icon>
               </v-list-item-icon>
               <v-list-item-content>
-                <v-list-item-title class="pl-2" style="color: grey">{{
-                  item.title
-                }}
-                <span style="float:right;color:black">{{item.point}}</span>
+                <v-list-item-title class="pl-2" style="color: grey"
+                  >{{ item.title }}
+                  <span style="float: right; color: black">{{
+                    item.point
+                  }}</span>
                 </v-list-item-title>
-                
               </v-list-item-content>
             </v-list-item>
           </div>
@@ -178,7 +238,6 @@
     </div>
 
     <!---third row :end-->
-
   </div>
 </template>
 
@@ -188,6 +247,7 @@ export default {
   props: ["drawer_state"],
   data() {
     return {
+      P_in_out_dropdown: false,
       items: [
         {
           title: "Cardiology",
@@ -294,20 +354,16 @@ export default {
     },
     doughnutChart() {
       // ploting  graph
-      const labels = ["Male", "Female"];
+      const labels = ["Inpatients", "Outpatients"];
       const data = {
         labels: labels,
         datasets: [
           {
-            label: "Inpatients Trend",
-            backgroundColor: ["purple", "darkturquoise"],
-            borderColor: ["purple", "darkturquoise"],
-            hoverBackgroundColor: ["#32174d", "cyan"],
+            backgroundColor: ["rgba(128,0,128,0.8)", "rgba(0,255,255,0.8)"],
+            borderColor: ["rgba(128,0,128,1)", "rgba(0,255,255,1)"],
+            hoverBackgroundColor: ["rgba(128,0,128,1)", "rgba(0,255,255,1)"],
             hoverBorderColor: ["black", "black"],
-            barThickness: 15,
-            maxBarThickness: 13,
-            minBarLength: 2,
-            data: [5, 10],
+            data: [50, 40],
           },
         ],
       };
@@ -322,10 +378,11 @@ export default {
               align: "start",
               labels: {
                 padding: 40,
+                usePointStyle: true,
               },
             },
             title: {
-              display: true,
+              display: false,
               text: "Outpatients vs. Inpatients Trend",
               align: "start",
               font: {
@@ -336,10 +393,57 @@ export default {
             },
           },
           maintainAspectRatio: false,
+          cutout: 90,
         },
       };
-      var myChart = new Chart(document.getElementById("doughnut"), config);
-      console.log(myChart);
+      new Chart(document.getElementById("doughnut"), config);
+    },
+
+    doughnutChartGender() {
+      // ploting  graph
+      const labels = ["Male", "Female"];
+      const data = {
+        labels: labels,
+        datasets: [
+          {
+            backgroundColor: ["rgba(128,0,128,0.8)", "rgba(255,69,0,0.8)"],
+            borderColor: ["rgba(128,0,128,1)", "rgba(255,69,0,1)"],
+            hoverBackgroundColor: ["rgba(128,0,128,1)", "rgba(255,69,0,1)"],
+            hoverBorderColor: ["black", "black"],
+            data: [50, 40],
+          },
+        ],
+      };
+      const config = {
+        type: "doughnut",
+        data,
+        options: {
+          responsive: false,
+          plugins: {
+            legend: {
+              position: "bottom",
+              align: "start",
+              labels: {
+                padding: 40,
+                usePointStyle: true,
+              },
+            },
+            title: {
+              display: false,
+              text: "Outpatients vs. Inpatients Trend",
+              align: "start",
+              font: {
+                size: 18,
+                family: "Roboto",
+                weight: "bold",
+              },
+            },
+          },
+          maintainAspectRatio: false,
+          cutout: 90,
+        },
+      };
+      new Chart(document.getElementById("doughnut_gender"), config);
     },
     linechart() {
       const labels = ["07 am", "08 am", "09 am", "10 am", "11 am", "12 pm"];
@@ -391,14 +495,14 @@ export default {
         },
       };
 
-      var myChart = new Chart(document.getElementById("linechart"), config);
-      console.log(myChart);
+      new Chart(document.getElementById("linechart"), config);
     },
   },
   mounted() {
     this.barChart();
     this.doughnutChart();
     this.linechart();
+    this.doughnutChartGender();
   },
   watch: {
     drawer_state: function () {
@@ -407,17 +511,31 @@ export default {
         document.getElementById("doughnut").style.width = "250px";
         document.getElementById("bar").style.width = "500px";
         document.getElementById("linechart").style.width = "500px";
+        document.getElementById("doughnut_gender").style.width = "250px";
+
         document.getElementById("doughnut").style.height = "250px";
         document.getElementById("bar").style.height = "250px";
         document.getElementById("linechart").style.height = "250px";
+        document.getElementById("doughnut_gender").style.height = "250px";
 
+
+        document.getElementById("division").style.maxHeight = "140px";
+        document.getElementById("division").style.height = "140px";
+        document.getElementById("pt").style.paddingLeft = "10px";
       } else {
         document.getElementById("doughnut").style.width = "290px";
         document.getElementById("bar").style.width = "600px";
         document.getElementById("linechart").style.width = "550px";
+        document.getElementById("doughnut_gender").style.width = "290px";
+
         document.getElementById("doughnut").style.height = "300px";
         document.getElementById("bar").style.height = "300px";
         document.getElementById("linechart").style.height = "300px";
+        document.getElementById("doughnut_gender").style.height = "300px";
+
+        document.getElementById("division").style.maxHeight = "215px";
+        document.getElementById("division").style.height = "215px";
+        document.getElementById("pt").style.paddingLeft = "55px";
       }
     },
   },

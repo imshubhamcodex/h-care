@@ -23,4 +23,16 @@ body{
     overflow: auto;
     overflow-x: hidden;
 }
+
+div::-webkit-scrollbar {
+    width: 5px;
+}
+div::-webkit-scrollbar-track {
+    background-color: lightgrey;
+    border-radius: 100px;
+}
+div::-webkit-scrollbar-thumb {
+    background-color: black;
+    border-radius: 100px;
+}
 </style>
