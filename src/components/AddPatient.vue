@@ -171,79 +171,107 @@
               <template>
                 <v-form>
                   <v-container>
-                    <v-row>
+                    <v-row
+                      class="relative mt-4"
+                      v-for="(row, index) in patient_history"
+                      :key="index"
+                    >
+                      <v-btn @click="remove(index)" class="ma-2" text color="indigo" style="position:absolute;right:0px;top:-25px;">
+                        <v-icon left> mdi-minus </v-icon>
+                        Remove
+                      </v-btn>
+
                       <v-col cols="12" sm="6">
-                        <span class="text-sm font-bold">Patient Name</span>
+                        <span class="text-sm font-bold">Hospital Name</span>
                         <v-text-field
-                          v-model="name"
-                          label="Name"
+                          v-model="row.hospital_name"
+                          label="Hospital"
                           clearable
                           outlined
                         ></v-text-field>
                       </v-col>
 
                       <v-col cols="12" sm="6">
-                        <span class="text-sm font-bold">Patient Age</span>
+                        <span class="text-sm font-bold">Disease Name</span>
 
                         <v-text-field
-                          v-model="age"
+                          v-model="row.disease"
                           outlined
-                          label="Age"
+                          label="Disease"
+                          clearable
+                        ></v-text-field>
+                      </v-col>
+
+                      <v-col cols="12" sm="6">
+                        <span class="text-sm font-bold">Cost Of Treatment</span>
+                        <v-text-field
+                          v-model="row.cost_of_treatment"
+                          outlined
+                          label="Cost"
                           clearable
                           type="number"
                         ></v-text-field>
                       </v-col>
 
                       <v-col cols="12" sm="6">
-                        <span class="text-sm font-bold">Patient Mobile</span>
+                        <span class="text-sm font-bold"
+                          >Estimated Cost In H-care</span
+                        >
                         <v-text-field
-                          v-model="mobile"
+                          v-model="row.estimated_cost_in_h_care"
+                          label="Cost"
                           outlined
-                          label="Mobile"
                           clearable
                           type="number"
                         ></v-text-field>
                       </v-col>
 
                       <v-col cols="12" sm="6">
-                        <span class="text-sm font-bold">Patient Gender</span>
-
-                        <v-select
-                          :items="genders"
-                          label="Gender"
-                          outlined
-                          clearable
-                          v-model="gender"
-                        ></v-select>
-                      </v-col>
-
-                      <v-col cols="12" sm="6">
-                        <span class="text-sm font-bold">Patient Email</span>
+                        <span class="text-sm font-bold"
+                          >Patient Admit Date</span
+                        >
                         <v-text-field
-                          v-model="email"
-                          outlined
-                          label="Email"
+                          v-model="row.admit_timestamp"
+                          label="Admit date"
                           clearable
-                          type="email"
+                          outlined
+                          type="date"
                         ></v-text-field>
                       </v-col>
 
                       <v-col cols="12" sm="6">
-                        <span class="text-sm font-bold">Patient Address</span>
+                        <span class="text-sm font-bold"
+                          >Patient Release Date</span
+                        >
+
                         <v-text-field
-                          v-model="address"
-                          label="Address"
+                          v-model="row.release_timestamp"
                           outlined
+                          label="Release Date"
                           clearable
+                          type="date"
                         ></v-text-field>
+                      </v-col>
+
+                      <v-col>
+                        <v-divider></v-divider>
                       </v-col>
                     </v-row>
                     <v-row>
                       <v-col>
                         <div class="text-center">
-                          <v-btn class="ma-2" outlined color="indigo">
+                          <v-btn
+                            @click="fun"
+                            class="ma-2"
+                            outlined
+                            color="indigo"
+                          >
                             <v-icon left> mdi-plus </v-icon>
-                            Add Another one
+                            {{
+                              this.patient_history.length === 0
+                                ? "Add History"
+                                : "Add Another one"
+                            }}
                           </v-btn>
                         </div>
                       </v-col>
@@ -282,7 +310,24 @@ export default {
       address: null,
       problem: null,
       doctor_id: null,
+      patient_history: [],
     };
+  },
+  methods: {
+    fun() {
+      let data = {
+        hospital_name: null,
+        disease: null,
+        cost_of_treatment: null,
+        admit_timestamp: null,
+        release_timestamp: null,
+        estimated_cost_in_h_care: null,
+      };
+      this.patient_history.push(data);
+    },
+    remove(index){
+      this.patient_history.splice(index,1)
+    }
   },
 };
 </script>
