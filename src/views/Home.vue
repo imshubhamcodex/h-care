@@ -62,7 +62,8 @@
         </v-card>
       </template>
       <!--dropdown panel :end-->
-      <Overview :drawer_state="mini" />
+      <Overview id="overview" :drawer_state="mini" />
+      <AddPatient style="display: none" id="add_patient" />
     </div>
     <!--main div :end-->
 
@@ -97,6 +98,7 @@
               v-for="item in items"
               :key="item.title"
               link
+              @click.stop="mini = true"
               @click="navigate(item)"
             >
               <v-list-item-icon>
@@ -190,14 +192,19 @@
 <script>
 import gsap from "gsap";
 import Overview from "@/components/Overview.vue";
+import AddPatient from "@/components/AddPatient.vue";
 export default {
   components: {
     Overview,
+    AddPatient,
   },
   data() {
     return {
       drawer: true,
       reveal: false,
+      showAddPatient: false,
+      showOverview: true,
+      current_view: "#overview",
       items: [
         {
           title: "Add Patient",
@@ -249,6 +256,46 @@ export default {
   },
   methods: {
     navigate(item) {
+      if (item.title === "Add Patient") {
+        let tl = gsap.timeline();
+        tl.fromTo(
+          this.current_view,
+          {
+            duration: 1,
+            y: 0,
+            opacity: 1,
+            display: "block",
+            ease: "Expo.easeOut",
+          },
+          {
+            duration: 1,
+            y: -100,
+            opacity: 0,
+            display: "none",
+            ease: "Expo.easeOut",
+          }
+        );
+
+        tl.fromTo(
+          "#add_patient",
+          {
+            duration: 1,
+            y: 200,
+            opacity: 0,
+            display: "none",
+            ease: "Expo.easeOut",
+          },
+          {
+            duration: 1,
+            y: 0,
+            opacity: 1,
+            display: "block",
+            ease: "Expo.easeOut",
+          },
+          "-=0.5"
+        );
+      }
+
       this.items.forEach((ele) => {
         if (ele.id === item.id) {
           document.getElementById(ele.id).style.color = item.color;
