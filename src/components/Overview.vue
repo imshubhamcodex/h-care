@@ -238,6 +238,14 @@
           </div>
         </div>
       </div>
+      <!----->
+      <div class="col-start-4 col-span-1 p-6">
+        <div class=" shadow-lg" style="border-radius: 7px ; height:350px; background-color:#9966CC">
+          <h2 class="font-bold p-6">Patients by Disease</h2>
+          <v-divider/>
+          <canvas height="380px" width="300px" id="piechart"></canvas>
+        </div>
+      </div>
     </div>
 
     <!---third row :end-->
@@ -501,6 +509,40 @@ export default {
 
       new Chart(document.getElementById("linechart"), config);
     },
+    piechart() {
+      const label = ["Migrain", "Tuberculosis", "Stones", "Cancer", "Anaemia"];
+      const data = {
+        labels: label,
+        datasets: [
+          {
+            
+            backgroundColor: ["brown", "yellow", "red", "rgba(128,0,128,1)", "cyan"],
+            data: [780, 520, 1000, 400, 710],
+            hoverBorderColor: ["black", "black","black","black","black"],
+            borderColor:["brown", "yellow", "red", "rgba(128,0,128,1)", "cyan"]
+          },
+        ],
+      };
+      const config = {
+        type: "pie",
+        data: data,
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              display:true,
+              labels:{
+              color:"black",
+            },
+              position: "top",
+            },
+            
+            
+          },
+        },
+      };
+      new Chart(document.getElementById("piechart"), config);
+    },
   },
   mounted() {
     let tl = gsap.timeline();
@@ -546,6 +588,7 @@ export default {
     this.doughnutChart();
     this.linechart();
     this.doughnutChartGender();
+    this.piechart();
   },
   watch: {
     drawer_state: function () {
