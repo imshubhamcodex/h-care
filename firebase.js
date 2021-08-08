@@ -196,15 +196,26 @@ let patient2_info = {
   doctor_id: "10",
 };
 
-let patient1_history = {
-  patient_id: patient1_info.patient_id,
-  hospital_name: "City hospital",
-  disease: "stones",
-  cost_of_treatment: "10000",
-  admit_timestamp: [getTimestamp(new Date("03/08/1996"))],
-  release_timestamp: [getTimestamp(new Date("09/08/1996"))],
-  estimated_cost_in_h_care: "5000",
-};
+let patient1_history = [
+  {
+    patient_id: patient1_info.patient_id,
+    hospital_name: "City hospital",
+    disease: "stones",
+    cost_of_treatment: "10000",
+    admit_timestamp: [getTimestamp(new Date("03/08/1996"))],
+    release_timestamp: [getTimestamp(new Date("09/08/1996"))],
+    estimated_cost_in_h_care: "5000",
+  },
+  {
+    patient_id: patient2_info.patient_id,
+    hospital_name: "City hospital",
+    disease: "migrain",
+    cost_of_treatment: "8000",
+    admit_timestamp: [getTimestamp(new Date("03/09/1997"))],
+    release_timestamp: [getTimestamp(new Date("08/09/1997"))],
+    estimated_cost_in_h_care: "6000",
+  },
+];
 
 let patient2_history = {
   patient_id: patient2_info.patient_id,
