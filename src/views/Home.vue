@@ -63,7 +63,7 @@
       </template>
       <!--dropdown panel :end-->
       <Overview id="overview" :drawer_state="mini" />
-      <AddPatient style="display: none" id="add_patient" />
+      <AddPatient id="add_patient" />
     </div>
     <!--main div :end-->
 
@@ -330,6 +330,8 @@ export default {
         stagger: 0.1,
       }
     );
+
+    document.getElementById('add_patient').style.display = 'none';
   },
 };
 </script>
