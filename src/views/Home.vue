@@ -62,9 +62,11 @@
         </v-card>
       </template>
       <!--dropdown panel :end-->
-      <Overview id="overview" :drawer_state="mini" />
-      <AddPatient id="add_patient" />
-      <AddDoctor id="add_doctor"/>
+      <Overview v-if="overview" :drawer_state="mini" />
+      <AddPatient v-if="add_patient" />
+      <AddDoctor v-if="add_doctor" />
+      <Patient v-if="patient" :drawer_state="mini" />
+      <Department v-if="department" :drawer_state="mini" />
     </div>
     <!--main div :end-->
 
@@ -194,21 +196,35 @@
 import gsap from "gsap";
 import Overview from "@/components/Overview.vue";
 import AddPatient from "@/components/AddPatient.vue";
-import AddDoctor from '@/components/AddDoctor.vue';
+import AddDoctor from "@/components/AddDoctor.vue";
+import Patient from "@/components/Patient.vue";
+import Department from "@/components/Department.vue";
 export default {
   components: {
     Overview,
     AddPatient,
-    AddDoctor
+    AddDoctor,
+    Patient,
+    Department,
   },
   data() {
     return {
       drawer: true,
       reveal: false,
-      showAddPatient: false,
-      showOverview: true,
-      current_view: "#overview",
+
+      overview: true,
+      patient: false,
+      add_patient: false,
+      add_doctor: false,
+      department: false,
+
       items: [
+        {
+          title: "Overview",
+          icon: "mdi-chart-pie",
+          id: "mdi-chart-pie2",
+          color: "darkorange",
+        },
         {
           title: "Add Patient",
           icon: "mdi-book-plus",
@@ -220,12 +236,6 @@ export default {
           icon: "mdi-briefcase-plus",
           id: "mdi-briefcase-plus2",
           color: "cyan",
-        },
-        {
-          title: "Overview",
-          icon: "mdi-chart-pie",
-          id: "mdi-chart-pie2",
-          color: "darkorange",
         },
         {
           title: "Patient",
@@ -258,90 +268,21 @@ export default {
     };
   },
   methods: {
+    hideAll() {
+      this.overview = false;
+      this.add_patient = false;
+      this.add_doctor = false;
+      this.patient = false;
+      this.department = false;
+    },
     navigate(item) {
-      if (item.title === "Add Patient") {
-        
-        let tl = gsap.timeline();
-        tl.fromTo(
-          this.current_view,
-          {
-            duration: 1,
-            y: 0,
-            opacity: 1,
-            display: "block",
-            ease: "Expo.easeOut",
-          },
-          {
-            duration: 1,
-            y: -100,
-            opacity: 0,
-            display: "none",
-            ease: "Expo.easeOut",
-          }
-        );
+      this.hideAll();
 
-        tl.fromTo(
-          "#add_patient",
-          {
-            duration: 1,
-            y: 200,
-            opacity: 0,
-            display: "none",
-            ease: "Expo.easeOut",
-          },
-          {
-            duration: 1,
-            y: 0,
-            opacity: 1,
-            display: "block",
-            ease: "Expo.easeOut",
-          },
-          "-=0.5"
-        );
-        this.current_view="#add_patient";
-      }
-      else if (item.title === "Add Doctor") {
-        
-        let tl = gsap.timeline();
-        tl.fromTo(
-          this.current_view,
-          {
-            duration: 1,
-            y: 0,
-            opacity: 1,
-            display: "block",
-            ease: "Expo.easeOut",
-          },
-          {
-            duration: 1,
-            y: -100,
-            opacity: 0,
-            display: "none",
-            ease: "Expo.easeOut",
-          }
-        );
-
-        tl.fromTo(
-          "#add_doctor",
-          {
-            duration: 1,
-            y: 200,
-            opacity: 0,
-            display: "none",
-            ease: "Expo.easeOut",
-          },
-          {
-            duration: 1,
-            y: 0,
-            opacity: 1,
-            display: "block",
-            ease: "Expo.easeOut",
-          },
-          "-=0.5"
-        );
-        this.current_view="#add_doctor";
-      }
-
+      if (item.title === "Overview") this.overview = true;
+      else if (item.title === "Add Patient") this.add_patient = true;
+      else if (item.title === "Add Doctor") this.add_doctor = true;
+      else if (item.title === "Patient") this.patient = true;
+      else if (item.title === "Department") this.department = true;
 
       this.items.forEach((ele) => {
         if (ele.id === item.id) {
@@ -378,8 +319,7 @@ export default {
       }
     );
 
-    document.getElementById('add_patient').style.display = 'none';
-   document.getElementById('add_doctor').style.display = 'none';
+    this.navigate(this.items[0]);
   },
 };
 </script>

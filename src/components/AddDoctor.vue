@@ -2,19 +2,19 @@
   <v-app>
     <v-stepper style="border-top: 1px solid grey" elevation="0" v-model="e1">
       <v-stepper-header>
-        <v-stepper-step :complete="e1 > 1" step="1">
+        <v-stepper-step color="cyan" :complete="e1 > 1" step="1">
           Primary Info
         </v-stepper-step>
 
         <v-divider></v-divider>
 
-        <v-stepper-step :complete="e1 > 2" step="2">
+        <v-stepper-step color="cyan" :complete="e1 > 2" step="2">
           Secondary Info
         </v-stepper-step>
 
         <v-divider></v-divider>
 
-        <v-stepper-step step="3">Optional info </v-stepper-step>
+        <v-stepper-step color="cyan" step="3">Optional info </v-stepper-step>
       </v-stepper-header>
 
       <v-stepper-items>
@@ -24,7 +24,7 @@
               <v-form>
                 <v-container>
                   <v-row>
-                    <v-col cols="12" sm="6">
+                    <v-col cols="12" sm="6" class="cols">
                       <span class="text-sm font-bold">Doctor Name</span>
                       <v-text-field
                         v-model="name"
@@ -34,7 +34,7 @@
                       ></v-text-field>
                     </v-col>
 
-                    <v-col cols="12" sm="6">
+                    <v-col cols="12" sm="6" class="cols">
                       <span class="text-sm font-bold">Doctor Age</span>
 
                       <v-text-field
@@ -46,7 +46,7 @@
                       ></v-text-field>
                     </v-col>
 
-                    <v-col cols="12" sm="6">
+                    <v-col cols="12" sm="6" class="cols">
                       <span class="text-sm font-bold">Doctor Mobile</span>
                       <v-text-field
                         v-model="mobile"
@@ -57,7 +57,7 @@
                       ></v-text-field>
                     </v-col>
 
-                    <v-col cols="12" sm="6">
+                    <v-col cols="12" sm="6" class="cols">
                       <span class="text-sm font-bold">Doctor Gender</span>
 
                       <v-select
@@ -69,7 +69,7 @@
                       ></v-select>
                     </v-col>
 
-                    <v-col cols="12" sm="6">
+                    <v-col cols="12" sm="6" class="cols">
                       <span class="text-sm font-bold">Doctor Email</span>
                       <v-text-field
                         v-model="email"
@@ -80,7 +80,7 @@
                       ></v-text-field>
                     </v-col>
 
-                    <v-col cols="12" sm="6">
+                    <v-col cols="12" sm="6" class="cols">
                       <span class="text-sm font-bold">Doctor Address</span>
                       <v-text-field
                         v-model="address"
@@ -95,7 +95,11 @@
             </template>
           </v-card>
 
-          <v-btn style="background-color: cyan; color: white" @click="e1 = 2">
+          <v-btn
+            style="background-color: cyan; color: white"
+            @click="e1 = 2"
+            class="btn"
+          >
             Continue
           </v-btn>
         </v-stepper-content>
@@ -113,7 +117,6 @@
                         label="Education"
                         clearable
                         outlined
-                        
                       ></v-text-field>
                     </v-col>
 
@@ -127,7 +130,6 @@
                         outlined
                         label="Specialization"
                         clearable
-                        
                       ></v-text-field>
                     </v-col>
 
@@ -140,8 +142,6 @@
                         clearable
                       ></v-text-field>
                     </v-col>
-
-                    
                   </v-row>
                 </v-container>
               </v-form>
@@ -166,7 +166,13 @@
                       v-for="(row, index) in doctor_appts"
                       :key="index"
                     >
-                      <v-btn @click="remove(index)" class="ma-2" text color="indigo" style="position:absolute;right:0px;top:-25px;">
+                      <v-btn
+                        @click="remove(index)"
+                        class="ma-2"
+                        text
+                        color="indigo"
+                        style="position: absolute; right: 0px; top: -25px"
+                      >
                         <v-icon left> mdi-minus </v-icon>
                         Remove
                       </v-btn>
@@ -191,15 +197,6 @@
                           type="time"
                         ></v-text-field>
                       </v-col>
-
-                      
-                      
-
-                      
-
-                      
-
-                      
 
                       <v-col>
                         <v-divider></v-divider>
@@ -242,6 +239,7 @@
 </template>
 
 <script>
+import gsap from "gsap";
 export default {
   data() {
     return {
@@ -252,7 +250,7 @@ export default {
       genders: ["Male", "Female"],
       gender: null,
       email: null,
-      education:null,
+      education: null,
       specialization: null,
       dept_no: null,
       address: null,
@@ -262,40 +260,49 @@ export default {
   methods: {
     fun() {
       let data = {
-       
         appt_timestamp_date: null,
-        appt_timestamp_time:null,
-        
+        appt_timestamp_time: null,
       };
       this.doctor_appts.push(data);
     },
-    remove(index){
-      this.doctor_appts.splice(index,1)
-    }
+    remove(index) {
+      this.doctor_appts.splice(index, 1);
+    },
+  },
+  mounted() {
+    let tl = gsap.timeline();
+
+    tl.fromTo(
+      ".cols",
+      {
+        duration: 1.5,
+        y: -100,
+        opacity: 0.0,
+        ease: "Expo.easeOut",
+        stagger: 0.1,
+      },
+      {
+        duration: 1.5,
+        y: 0,
+        opacity: 1,
+        ease: "Expo.easeOut",
+        stagger: 0.1,
+      }
+    );
+    tl.fromTo(
+      ".btn",
+      {
+        duration: 0.1,
+        opacity: 0,
+        stagger: 0.1,
+      },
+      {
+        duration: 0.1,
+        opacity: 1,
+        stagger: 0.1,
+      },
+      "-=.5"
+    );
   },
 };
 </script>
-
-<style scoped>
-body>>> .v-application .primary {
-  background: cyan !important;
-  color: white;
-  margin-right: 5px;
-}
-.v-stepper__step__step {
-  margin-right: 5px;
-}
-.v-form {
-  background: white;
-  border: 0px;
-  outline: 0px;
-  border-style: none;
-}
-.v-application .grey {
-  border: 0px;
-}
-.v-sheet.v-card:not(.v-sheet--outlined) {
-  box-shadow: 0 3px 1px -2px rgb(0 0 0 / 0%), 0 2px 2px 0 rgb(0 0 0 / 0%),
-    0 1px 5px 0 rgb(0 0 0 / 0%);
-}
-</style>

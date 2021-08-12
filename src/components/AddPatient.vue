@@ -2,19 +2,19 @@
   <v-app>
     <v-stepper style="border-top: 1px solid grey" elevation="0" v-model="e1">
       <v-stepper-header>
-        <v-stepper-step :complete="e1 > 1" step="1">
+        <v-stepper-step color="purple" :complete="e1 > 1" step="1">
           Primary Info
         </v-stepper-step>
 
         <v-divider></v-divider>
 
-        <v-stepper-step :complete="e1 > 2" step="2">
+        <v-stepper-step color="purple" :complete="e1 > 2" step="2">
           Secondary Info
         </v-stepper-step>
 
         <v-divider></v-divider>
 
-        <v-stepper-step step="3">Optional info </v-stepper-step>
+        <v-stepper-step color="purple" step="3">Optional info </v-stepper-step>
       </v-stepper-header>
 
       <v-stepper-items>
@@ -24,7 +24,7 @@
               <v-form>
                 <v-container>
                   <v-row>
-                    <v-col cols="12" sm="6">
+                    <v-col cols="12" sm="6" class="cols">
                       <span class="text-sm font-bold">Patient Name</span>
                       <v-text-field
                         v-model="name"
@@ -34,7 +34,7 @@
                       ></v-text-field>
                     </v-col>
 
-                    <v-col cols="12" sm="6">
+                    <v-col cols="12" sm="6" class="cols">
                       <span class="text-sm font-bold">Patient Age</span>
 
                       <v-text-field
@@ -46,7 +46,7 @@
                       ></v-text-field>
                     </v-col>
 
-                    <v-col cols="12" sm="6">
+                    <v-col cols="12" sm="6" class="cols">
                       <span class="text-sm font-bold">Patient Mobile</span>
                       <v-text-field
                         v-model="mobile"
@@ -57,7 +57,7 @@
                       ></v-text-field>
                     </v-col>
 
-                    <v-col cols="12" sm="6">
+                    <v-col cols="12" sm="6" class="cols">
                       <span class="text-sm font-bold">Patient Gender</span>
 
                       <v-select
@@ -69,7 +69,7 @@
                       ></v-select>
                     </v-col>
 
-                    <v-col cols="12" sm="6">
+                    <v-col cols="12" sm="6" class="cols">
                       <span class="text-sm font-bold">Patient Email</span>
                       <v-text-field
                         v-model="email"
@@ -80,7 +80,7 @@
                       ></v-text-field>
                     </v-col>
 
-                    <v-col cols="12" sm="6">
+                    <v-col cols="12" sm="6" class="cols">
                       <span class="text-sm font-bold">Patient Address</span>
                       <v-text-field
                         v-model="address"
@@ -95,7 +95,11 @@
             </template>
           </v-card>
 
-          <v-btn style="background-color: purple; color: white" @click="e1 = 2">
+          <v-btn
+            style="background-color: purple; color: white"
+            @click="e1 = 2"
+            class="btn"
+          >
             Continue
           </v-btn>
         </v-stepper-content>
@@ -176,7 +180,13 @@
                       v-for="(row, index) in patient_history"
                       :key="index"
                     >
-                      <v-btn @click="remove(index)" class="ma-2" text color="indigo" style="position:absolute;right:0px;top:-25px;">
+                      <v-btn
+                        @click="remove(index)"
+                        class="ma-2"
+                        text
+                        color="indigo"
+                        style="position: absolute; right: 0px; top: -25px"
+                      >
                         <v-icon left> mdi-minus </v-icon>
                         Remove
                       </v-btn>
@@ -294,6 +304,7 @@
 </template>
 
 <script>
+import gsap from "gsap";
 export default {
   data() {
     return {
@@ -325,19 +336,49 @@ export default {
       };
       this.patient_history.push(data);
     },
-    remove(index){
-      this.patient_history.splice(index,1)
-    }
+    remove(index) {
+      this.patient_history.splice(index, 1);
+    },
+  },
+  mounted() {
+    let tl = gsap.timeline();
+
+    tl.fromTo(
+      ".cols",
+      {
+        duration: 1,
+        y: -100,
+        opacity: 0.0,
+        ease: "Expo.easeOut",
+        stagger: 0.1,
+      },
+      {
+        duration: 1,
+        y: 0,
+        opacity: 1,
+        ease: "Expo.easeOut",
+        stagger: 0.1,
+      },
+    );
+    tl.fromTo(
+      ".btn",
+      {
+        duration: 0.1,
+        opacity: 0,
+        stagger: 0.1,
+      },
+      {
+        duration: 0.1,
+        opacity: 1,
+        stagger: 0.1,
+      },
+      "-=0.2"
+    );
   },
 };
 </script>
 
 <style>
-.v-application .primary {
-  background: purple !important;
-  color: white;
-  margin-right: 5px;
-}
 .v-stepper__step__step {
   margin-right: 5px;
 }
