@@ -64,6 +64,7 @@
       <!--dropdown panel :end-->
       <Overview id="overview" :drawer_state="mini" />
       <AddPatient id="add_patient" />
+      <AddDoctor id="add_doctor"/>
     </div>
     <!--main div :end-->
 
@@ -193,10 +194,12 @@
 import gsap from "gsap";
 import Overview from "@/components/Overview.vue";
 import AddPatient from "@/components/AddPatient.vue";
+import AddDoctor from '@/components/AddDoctor.vue';
 export default {
   components: {
     Overview,
     AddPatient,
+    AddDoctor
   },
   data() {
     return {
@@ -257,6 +260,7 @@ export default {
   methods: {
     navigate(item) {
       if (item.title === "Add Patient") {
+        
         let tl = gsap.timeline();
         tl.fromTo(
           this.current_view,
@@ -294,7 +298,50 @@ export default {
           },
           "-=0.5"
         );
+        this.current_view="#add_patient";
       }
+      else if (item.title === "Add Doctor") {
+        
+        let tl = gsap.timeline();
+        tl.fromTo(
+          this.current_view,
+          {
+            duration: 1,
+            y: 0,
+            opacity: 1,
+            display: "block",
+            ease: "Expo.easeOut",
+          },
+          {
+            duration: 1,
+            y: -100,
+            opacity: 0,
+            display: "none",
+            ease: "Expo.easeOut",
+          }
+        );
+
+        tl.fromTo(
+          "#add_doctor",
+          {
+            duration: 1,
+            y: 200,
+            opacity: 0,
+            display: "none",
+            ease: "Expo.easeOut",
+          },
+          {
+            duration: 1,
+            y: 0,
+            opacity: 1,
+            display: "block",
+            ease: "Expo.easeOut",
+          },
+          "-=0.5"
+        );
+        this.current_view="#add_doctor";
+      }
+
 
       this.items.forEach((ele) => {
         if (ele.id === item.id) {
@@ -332,6 +379,7 @@ export default {
     );
 
     document.getElementById('add_patient').style.display = 'none';
+   document.getElementById('add_doctor').style.display = 'none';
   },
 };
 </script>
