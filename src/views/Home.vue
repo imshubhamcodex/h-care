@@ -67,6 +67,7 @@
       <AddDoctor v-if="add_doctor" />
       <Patient v-if="patient" :drawer_state="mini" />
       <Department v-if="department" :drawer_state="mini" />
+      <Doctor v-if="doctor" :drawer_state="mini" />
     </div>
     <!--main div :end-->
 
@@ -199,6 +200,7 @@ import AddPatient from "@/components/AddPatient.vue";
 import AddDoctor from "@/components/AddDoctor.vue";
 import Patient from "@/components/Patient.vue";
 import Department from "@/components/Department.vue";
+import Doctor from "@/components/Doctor.vue";
 export default {
   components: {
     Overview,
@@ -206,8 +208,10 @@ export default {
     AddDoctor,
     Patient,
     Department,
+    Doctor,
   },
-  data() {
+  
+    data() {
     return {
       drawer: true,
       reveal: false,
@@ -217,6 +221,7 @@ export default {
       add_patient: false,
       add_doctor: false,
       department: false,
+      doctor: false,
 
       items: [
         {
@@ -274,6 +279,7 @@ export default {
       this.add_doctor = false;
       this.patient = false;
       this.department = false;
+      this.doctor=false;
     },
     navigate(item) {
       this.hideAll();
@@ -283,6 +289,7 @@ export default {
       else if (item.title === "Add Doctor") this.add_doctor = true;
       else if (item.title === "Patient") this.patient = true;
       else if (item.title === "Department") this.department = true;
+      else if (item.title === "Doctor") this.doctor = true;
 
       this.items.forEach((ele) => {
         if (ele.id === item.id) {
