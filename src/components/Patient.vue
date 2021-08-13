@@ -257,7 +257,7 @@
 </template>
 
 <script>
-import gsap from "gsap";
+import gsap from "gsap"; // animation
 import Chart from "chart.js/auto";
 export default {
   props: ["drawer_state"],
