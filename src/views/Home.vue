@@ -125,6 +125,7 @@
             v-if="mini"
             class="pl-2 pb-3"
             style="padding-top: 97px"
+            id="google_play"
           >
             <v-btn fab small>
               <v-icon dark> mdi-google-play </v-icon>
@@ -382,5 +383,11 @@ export default {
   opacity: 1 !important;
   position: absolute;
   width: 100%;
+}
+.v-navigation-drawer__content{
+  overflow-y: hidden;
+}
+#google_play{
+  padding-top:80px !important;
 }
 </style>

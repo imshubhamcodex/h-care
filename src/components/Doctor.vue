@@ -3,9 +3,9 @@
   <div>
     <!--row1 starts-->
 
-    <div class="grid lg:grid-cols-4 top_row">
+    <div class="grid lg:grid-cols-4">
       <!--col1 starts-->
-      <div class="col-start-1 col-span-2 p-6">
+      <div id="linechart_div" class="col-start-1 col-span-2 p-6 top_row">
         <div class="bg-white p-6 shadow-lg flex" style="border-radius: 7px">
           <canvas height="300px" width="550px" id="linechart"></canvas>
         </div>
@@ -13,8 +13,11 @@
       <!--col1 ends-->
 
       <!----col2 starts--->
-      <div class="col-start-3 col-span-1 p-6">
-        <div class="bg-white p-6 shadow-lg flex" style="border-radius: 7px">
+      <div class="p-6 top_row">
+        <div
+          class="bg-white p-6 shadow-lg flex gender_box"
+          style="border-radius: 7px"
+        >
           <div class="relative" style="border-radius: 7px; height: 300px">
             <h1 class="font-bold text-md">Doctors by Gender</h1>
 
@@ -25,14 +28,14 @@
               id="doughnut_gender"
             ></canvas>
             <v-icon
-              class=""
               style="
-                top: 35%;
+                top: 40%;
                 left: 45%;
                 transform: translate(-50%, -50%);
                 position: absolute;
                 zoom: 2;
               "
+              id="v_icon_gender"
               >{{ "mdi-gender-male-female" }}</v-icon
             >
           </div>
@@ -41,14 +44,10 @@
 
       <!---col2 ends------>
       <!--col3 starts-->
-      <div class="col-start-4 col-span-1 p-6">
-        <div
-          class="bg-white shadow-lg"
-          style="border-radius: 7px; background-color: #feafd5"
-        >
+      <div class="p-6 top_row">
+        <div class="bg-white shadow-lg" style="border-radius: 7px">
           <div class="flex">
             <h2 class="font-bold p-6">Doctors by Division</h2>
-            <v-icon class="ml-12">mdi-chevron-down</v-icon>
           </div>
           <v-divider></v-divider>
           <div style="color: #d3d3d3" class="pl-4 pt-4 pb-4 flex">
@@ -88,15 +87,17 @@
     <!---row1 ends--->
 
     <!----row2 starts--->
-    <div class="grid lg:grid-cols-4 second_row">
+    <div class="grid lg:grid-cols-4">
       <!---row2col1 starts--->
-      <div class="col-start-1 col-span-1 p-6">
+      <div class="p-6 second_row">
         <div
           class="bg-white p-6 shadow-lg flex"
           style="border-radius: 7px; background-color: #b0eee9"
         >
-          <div class="relative" style="border-radius: 7px; height: 300px">
-            <h1 class="font-bold text-md" id="polarheading">Appointments per department</h1>
+          <div style="border-radius: 7px; height: 300px">
+            <h1 class="font-bold text-md" id="polarheading">
+              Appointments per department
+            </h1>
 
             <canvas
               class="-ml-9"
@@ -110,7 +111,7 @@
       <!----row2col1 ends--->
 
       <!----row2col2 starts--->
-      <div class="col-start-2 col-span-1 p-6">
+      <div class="p-6 second_row">
         <div class="bg-white p-6 shadow-lg flex" style="border-radius: 7px">
           <div class="relative" style="border-radius: 7px; height: 300px">
             <h1 class="font-bold text-md">AVg Doctor salary per Dept.</h1>
@@ -129,9 +130,9 @@
       <!----row2col2 starts--->
 
       <!----row2col3 starts--->
-      <div class="col-start-3 col-span-2 p-6">
+      <div class="p-6 second_row">
         <div class="bg-white p-6 shadow-lg flex" style="border-radius: 7px">
-          <div  style="border-radius: 7px; height: 300px">
+          <div style="border-radius: 7px; height: 300px">
             <h1 class="font-bold text-md">Avg Doctor Rating</h1>
 
             <canvas
@@ -257,7 +258,13 @@ export default {
         },
       };
 
-      new Chart(document.getElementById("linechart"), config);
+      let line_chart = new Chart(document.getElementById("linechart"), config);
+
+      if (screen.width <= parseInt(370)) {
+        line_chart.resize(240, 300);
+      } else if (screen.width <= parseInt(420)) {
+        line_chart.resize(278, 350);
+      }
     },
     doughnutChartGender() {
       // ploting  graph
@@ -371,13 +378,26 @@ export default {
       new Chart(document.getElementById("piechart"), config);
     },
     barchart() {
-      const labels = ["Jan", "Feb", "Mar", "Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+      const labels = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ];
       const data = {
         labels: labels,
         datasets: [
           {
             label: "Months",
-            data: [8, 9, 8, 7, 6.5, 8.5, 6,7,9.5,10,7.5,8],
+            data: [8, 9, 8, 7, 6.5, 8.5, 6, 7, 9.5, 10, 7.5, 8],
             backgroundColor: [
               "rgba(255, 99, 132, 0.2)",
               "rgba(255, 159, 64, 0.2)",
@@ -409,19 +429,32 @@ export default {
               beginAtZero: true,
             },
           },
+          maintainAspectRatio: false,
         },
       };
-      new Chart(document.getElementById("barchart"), config);
+      let bar_chart = new Chart(document.getElementById("barchart"), config);
+
+      if (screen.width <= parseInt(370)) {
+        bar_chart.resize(240, 300);
+      } else if (screen.width <= parseInt(420)) {
+        bar_chart.resize(278, 350);
+      }
     },
   },
   mounted() {
+    if (screen.width < parseInt(420)) {
+      document.getElementById("linechart_div").classList.remove("col-start-1");
+      document.getElementById("linechart_div").classList.remove("col-span-2");
+    }
+
     let tl = gsap.timeline();
+
     tl.fromTo(
-      ".second_row",
+      ".top_row",
       {
         duration: 1.1,
         y: -100,
-        opacity: 0.1,
+        opacity: 0,
         ease: "Expo.easeOut",
         stagger: 0.1,
       },
@@ -435,22 +468,22 @@ export default {
     );
 
     tl.fromTo(
-      ".top_row",
+      ".second_row",
       {
-        duration: 1.2,
-        y: -100,
-        opacity: 0,
+        duration: 1,
+        x: -100,
+        opacity: 0.0,
         ease: "Expo.easeOut",
         stagger: 0.1,
       },
       {
-        duration: 1.2,
-        y: 0,
+        duration: 1,
+        x: 0,
         opacity: 1,
         ease: "Expo.easeOut",
         stagger: 0.1,
       },
-      "-=1"
+      "-=0.8"
     );
 
     this.linechart();
@@ -461,7 +494,6 @@ export default {
   },
   watch: {
     drawer_state: function () {
-      console.log(this.drawer_state);
       if (!this.drawer_state) {
         document.getElementById("piechart").style.width = "250px";
         document.getElementById("barchart").style.width = "500px";
@@ -472,15 +504,16 @@ export default {
         document.getElementById("barchart").style.height = "250px";
         document.getElementById("linechart").style.height = "250px";
         document.getElementById("doughnut_gender").style.height = "250px";
+        document.getElementsByClassName("gender_box")[0].style.height = "300px";
 
         document.getElementById("division").style.maxHeight = "140px";
         document.getElementById("division").style.height = "140px";
         document.getElementById("pt").style.paddingLeft = "10px";
-        document.getElementById("polarheading").style.paddingLeft = "0px";
-        
-        
+        document.getElementById("polarheading").style.marginLeft = "-27px";
 
-        document.getElementById("patient_by_disease").style.height = "300px";
+        document.getElementById("polar_doctors").style.marginLeft = "-55px";
+
+        document.getElementById("v_icon_gender").style.top = "35%";
       } else {
         document.getElementById("piechart").style.width = "290px";
         document.getElementById("barchart").style.width = "550px";
@@ -491,16 +524,58 @@ export default {
         document.getElementById("barchart").style.height = "300px";
         document.getElementById("linechart").style.height = "300px";
         document.getElementById("doughnut_gender").style.height = "300px";
+        document.getElementsByClassName("gender_box")[0].style.height = "350px";
+
+        document.getElementById("v_icon_gender").style.top = "40%";
 
         document.getElementById("division").style.maxHeight = "215px";
         document.getElementById("division").style.height = "215px";
         document.getElementById("pt").style.paddingLeft = "55px";
         document.getElementById("polarheading").style.paddingLeft = "10px";
-        
-
-        document.getElementById("patient_by_disease").style.height = "350px";
       }
     },
   },
 };
 </script>
+
+<style scoped>
+@media (max-width: 420px) {
+  .top_row,
+  .second_row {
+    margin-left: -17px !important;
+  }
+
+  #doughnut_gender,
+  #polar_doctors,
+  #piechart {
+    margin-left: 0px;
+  }
+  #v_icon_gender {
+    margin-left: 7px;
+    margin-top: -2px;
+  }
+}
+
+@media (max-width: 360px) {
+  .second_row,
+  .top_row {
+    margin-left: -17px !important;
+  }
+  .top_row {
+    max-width: 340px;
+  }
+  .second_row {
+    max-width: 340px;
+  }
+
+  #doughnut_gender,
+  #polar_doctors,
+  #piechart {
+    margin-left: -25px;
+  }
+  #v_icon_gender {
+    margin-left: 0px;
+    margin-top: -2px;
+  }
+}
+</style>
