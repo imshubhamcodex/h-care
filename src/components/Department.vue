@@ -1,7 +1,7 @@
 <template>
   <div>
     <!---parent div start-->
-    <div class="grid lg:grid-cols-4">
+    <div class="grid lg:grid-cols-4" id="upper_div">
       <!--col1 :start-->
       <div class="p-6 second_row">
         <div class="bg-white p-6 shadow-lg" style="border-radius: 7px">
@@ -136,7 +136,7 @@
         </div>
       </div>
       <!--polar chart :end-->
-      <div class="col-start-2 col-span-2 p-6">
+      <div id="bar_chart_div" class="col-start-2 col-span-2 p-6">
         <!-- bar :start-->
         <div
           class="bg-white p-6 shadow-lg flex last_row"
@@ -151,7 +151,6 @@
         <div class="bg-white shadow-lg h-full" style="border-radius: 7px">
           <div class="flex">
             <h2 class="font-bold p-6">Types of Departments</h2>
-            <v-icon class="ml-8">mdi-chevron-down</v-icon>
           </div>
           <v-divider></v-divider>
           <div style="color: #d3d3d3" class="pl-4 pt-4 pb-4 flex">
@@ -498,12 +497,25 @@ export default {
               },
             },
           },
+          "maintainAspectRatio": false
         },
       };
-      new Chart(document.getElementById("bar"), config);
+      let bar_chart = new Chart(document.getElementById("bar"), config);
+
+      if(screen.width <= parseInt(370)){
+        bar_chart.resize(240,310);
+      }
+      else if(screen.width <= parseInt(420)){
+        bar_chart.resize(278,380);
+      }
     },
   },
   mounted() {
+    if (screen.width < parseInt(420)) {
+      document.getElementById("bar_chart_div").classList.remove("col-start-2");
+      document.getElementById("bar_chart_div").classList.remove("col-span-2");
+    }
+
     let tl = gsap.timeline();
     tl.fromTo(
       ".second_row",
@@ -537,7 +549,8 @@ export default {
         opacity: 1,
         ease: "Expo.easeOut",
         stagger: 0.1,
-      },"-=1"
+      },
+      "-=1"
     );
 
     this.topCardioDoughnut();
@@ -605,5 +618,45 @@ export default {
 <style scoped>
 .top_row {
   opacity: 0;
+}
+
+@media (max-width: 420px) {
+  .second_row,
+  .last_row {
+    margin-left: -17px !important;
+  }
+  .last_row{
+    max-width:385px;
+  }
+
+  #top_cardio_doughnut,
+  #top_neuro_doughnut,
+  #top_rehab_doughnut,
+  #top_radio_doughnut,
+  #polar_doctors {
+    margin-left: 0px;
+  }
+}
+
+@media (max-width: 360px) {
+  .second_row,
+  .last_row {
+    margin-left: -17px !important;
+  }
+  .last_row{
+    max-width:340px;
+  }
+  .second_row{
+    max-width: 340px;
+  }
+
+
+  #top_cardio_doughnut,
+  #top_neuro_doughnut,
+  #top_rehab_doughnut,
+  #top_radio_doughnut,
+  #polar_doctors {
+    margin-left: -25px;
+  }
 }
 </style>
