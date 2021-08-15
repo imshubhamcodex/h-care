@@ -358,7 +358,7 @@ export default {
         opacity: 1,
         ease: "Expo.easeOut",
         stagger: 0.1,
-      },
+      }
     );
     tl.fromTo(
       ".btn",

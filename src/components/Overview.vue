@@ -1,6 +1,3 @@
 <template>
-  <div>
-    This is Overview
-  </div>
+  <div>This is Overview</div>
 </template>
-

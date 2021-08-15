@@ -130,7 +130,7 @@
       <!----row2col2 starts--->
 
       <!----row2col3 starts--->
-      <div id="bar_chart_div" class=" col-start-3 col-span-2 p-6 second_row">
+      <div id="bar_chart_div" class="col-start-3 col-span-2 p-6 second_row">
         <div class="bg-white p-6 shadow-lg flex" style="border-radius: 7px">
           <div style="border-radius: 7px; height: 300px">
             <h1 class="font-bold text-md">Avg Doctor Rating</h1>

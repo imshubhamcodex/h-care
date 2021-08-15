@@ -497,16 +497,15 @@ export default {
               },
             },
           },
-          "maintainAspectRatio": false
+          maintainAspectRatio: false,
         },
       };
       let bar_chart = new Chart(document.getElementById("bar"), config);
 
-      if(screen.width <= parseInt(370)){
-        bar_chart.resize(240,310);
-      }
-      else if(screen.width <= parseInt(420)){
-        bar_chart.resize(278,380);
+      if (screen.width <= parseInt(370)) {
+        bar_chart.resize(240, 310);
+      } else if (screen.width <= parseInt(420)) {
+        bar_chart.resize(278, 380);
       }
     },
   },
@@ -625,8 +624,8 @@ export default {
   .last_row {
     margin-left: -17px !important;
   }
-  .last_row{
-    max-width:385px;
+  .last_row {
+    max-width: 385px;
   }
 
   #top_cardio_doughnut,
@@ -643,13 +642,12 @@ export default {
   .last_row {
     margin-left: -17px !important;
   }
-  .last_row{
-    max-width:340px;
-  }
-  .second_row{
+  .last_row {
     max-width: 340px;
   }
-
+  .second_row {
+    max-width: 340px;
+  }
 
   #top_cardio_doughnut,
   #top_neuro_doughnut,

@@ -35,5 +35,4 @@ div::-webkit-scrollbar-thumb {
   background-color: black;
   border-radius: 100px;
 }
-
 </style>

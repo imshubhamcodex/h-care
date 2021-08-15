@@ -211,8 +211,8 @@ export default {
     Department,
     Doctor,
   },
-  
-    data() {
+
+  data() {
     return {
       drawer: true,
       reveal: false,
@@ -280,7 +280,7 @@ export default {
       this.add_doctor = false;
       this.patient = false;
       this.department = false;
-      this.doctor=false;
+      this.doctor = false;
     },
     navigate(item) {
       this.hideAll();
@@ -384,10 +384,10 @@ export default {
   position: absolute;
   width: 100%;
 }
-.v-navigation-drawer__content{
+.v-navigation-drawer__content {
   overflow-y: hidden;
 }
-#google_play{
-  padding-top:80px !important;
+#google_play {
+  padding-top: 80px !important;
 }
 </style>

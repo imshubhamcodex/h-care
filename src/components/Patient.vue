@@ -243,7 +243,11 @@
         <div
           class="shadow-lg"
           id="patient_by_disease"
-          style="border-radius: 7px; height: 350px; background-color: #9966cc"
+          style="
+            border-radius: 7px;
+            height: 350px;
+            background-color: rgba(153, 102, 204, 0.4);
+          "
         >
           <h2 class="font-bold p-4">Patients by Disease</h2>
           <v-divider />
