@@ -10,9 +10,15 @@ const routes = [
     component: () => import("../views/Home.vue"),
   },
   {
+<<<<<<< HEAD
     path: "/db",
     name: "db",
-    component: () => import("../views/DB.vue")
+    component: () => import("../views/DB.vue"),
+=======
+    path: "/about",
+    name: "About",
+    component: () => import("../views/About.vue"),
+>>>>>>> origin/master
   },
 ];
 
