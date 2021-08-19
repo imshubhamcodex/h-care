@@ -1,4 +1,5 @@
 import firebase from "firebase";
+import store from "./src/store/index.js";
 
 var firebaseConfig = {
   apiKey: "AIzaSyA_VSxNX8oQ9KhxgvWhcK5pU2daSUHV1oc",
@@ -25,8 +26,8 @@ function getTimestamp(date) {
 }
 
 let apptsArr = [
-  getTimestamp(new Date("03/07/1999")),
-  getTimestamp(new Date("10/31/1997")),
+  { ts: getTimestamp(new Date("03/07/1999")), total_appts: 4 },
+  { ts: getTimestamp(new Date("10/31/1997")), total_appts: 1 },
 ]; // ---->  mm/dd/yyyy
 
 let involvmentsArr = [
@@ -45,6 +46,8 @@ let doctor1_info = {
   education: "mbbs md",
   no_of_patients: "0",
   dept_no: "10",
+  salary: 30000,
+  rating: 10,
 };
 
 let doctor2_info = {
@@ -58,18 +61,18 @@ let doctor2_info = {
   education: "mbbs",
   no_of_patients: "0",
   dept_no: "2",
+  salary: 10000,
+  rating: 5,
 };
 
 let doctor1_appt = {
   doctor_id: doctor1_info.doctor_id,
   appts: apptsArr, // ---->  mm/dd/yyyy
-  total_appts: apptsArr.length,
 };
 
 let doctor2_appt = {
   doctor_id: doctor2_info.doctor_id,
   appts: apptsArr, // ---->  mm/dd/yyyy
-  total_appts: apptsArr.length,
 };
 
 async function setDoctorsInfo() {
@@ -349,6 +352,7 @@ async function setDepartmentsInvolments() {
       { merge: true }
     );
 }
+
 export {
   setDoctorsInfo,
   setDoctorsAppt,
@@ -360,4 +364,169 @@ export {
   setDepartmentsDoctors,
   setDepartmentsFrequency,
   setDepartmentsInvolments,
+  getDoctors,
+  getDepartments,
+  getPatients,
+  getSttafs,
 };
+
+//-----------------testing DB ------------------------------------------------------------//
+const db = firebase.firestore();
+
+async function getDoctors() {
+  await db
+    .collection("doctors")
+    .get()
+    .then((res) => {
+      const doctors = res.docs.map((doc) => doc.data());
+      let doctors_appt = doctors[0];
+
+      // co-ordinates
+      let doctors_apptX = [];
+      let doctors_apptY = [];
+
+      // all dates
+      let dates = [];
+
+      //setting each dates
+      Object.keys(doctors_appt).forEach((ele) => {
+        doctors_appt[ele].appts.forEach((appt) => {
+          dates.push({ total: appt.total_appts, date: appt.ts.toDate() });
+        });
+      });
+
+      // sorting dates
+      dates.sort((a, b) => b.date - a.date);
+
+      // setting X and Y co-ordinates
+      dates.forEach((obj) => {
+        doctors_apptX.push(
+          obj.date.toString().substring(4, 10) +
+            " " +
+            obj.date.toString().substring(16, 21)
+        );
+        doctors_apptY.push(obj.total);
+      });
+
+      let doctors_info = doctors[1];
+      // number of male doctors
+      let male_doctors = 0;
+
+      // number of female doctors
+      let female_doctors = 0;
+
+      // specs array
+      let specs = [
+        "cardiologist",
+        "neurologist",
+        "rehabilitation",
+        "surgeon",
+        "radiologist",
+        "dietary",
+      ];
+      // initilizing each quantity with zero, all these correspond to specs array
+      let no_of_doctors = [0, 0, 0, 0, 0, 0];
+      let doctors_per_department = [0, 0, 0, 0, 0, 0];
+      let sum_of_salaries = [0, 0, 0, 0, 0, 0];
+      let avg_salaries = [0, 0, 0, 0, 0, 0];
+      let sum_of_ratings = [0, 0, 0, 0, 0, 0];
+      let avg_ratings = [0, 0, 0, 0, 0, 0];
+
+      Object.keys(doctors_info).forEach((ele) => {
+        if (doctors_info[ele].gender === "male") male_doctors++;
+        else female_doctors++;
+
+        if (specs.indexOf(doctors_info[ele].spec) >= 0) {
+          no_of_doctors[specs.indexOf(doctors_info[ele].spec)]++;
+        }
+
+        if (specs.indexOf(doctors_info[ele].spec) >= 0) {
+          sum_of_salaries[specs.indexOf(doctors_info[ele].spec)] += Number(
+            doctors_info[ele].salary
+          );
+        }
+
+        if (specs.indexOf(doctors_info[ele].spec) >= 0) {
+          sum_of_ratings[specs.indexOf(doctors_info[ele].spec)] += Number(
+            doctors_info[ele].rating
+          );
+        }
+      });
+
+      // finding average of salaries
+      sum_of_salaries.forEach((ele, index) => {
+        if (no_of_doctors[index] > 0) {
+          avg_salaries[index] = ele / (parseInt(no_of_doctors) * 1000);
+        }
+      });
+
+      // finding average of ratings
+      sum_of_ratings.forEach((ele, index) => {
+        if (no_of_doctors[index] > 0) {
+          avg_ratings[index] = ele / parseInt(no_of_doctors);
+        }
+      });
+
+      // inside doctors_appt
+      Object.keys(doctors_appt).forEach((ele) => {
+        let doctor_id = doctors_appt[ele].doctor_id;
+        // inside doctors_info
+        Object.keys(doctors_info).forEach((item) => {
+          // if id matches
+          if (doctors_info[item].doctor_id === doctor_id) {
+            if (specs.indexOf(doctors_info[item].spec) >= 0) {
+              let appts = 0;
+              // for each appts
+              doctors_appt[ele].appts.forEach((ele) => {
+                // add total number of appts
+                appts = appts + Number(ele.total_appts);
+              });
+              doctors_per_department[specs.indexOf(doctors_info[item].spec)] =
+                appts;
+            }
+          }
+        });
+      });
+
+      let doctors_details = {
+        doctors_apptX,
+        doctors_apptY,
+        female_doctors,
+        male_doctors,
+        no_of_doctors,
+        doctors_per_department,
+        avg_salaries,
+        avg_ratings,
+      };
+
+      store.commit({
+        type: "setDoctors",
+        doctors_details,
+      });
+    });
+}
+
+function getDepartments() {
+  db.collection("departments")
+    .get()
+    .then((res) => {
+      const departments = res.docs.map((doc) => doc.data());
+      console.log(departments);
+    });
+}
+function getPatients() {
+  db.collection("patients")
+    .get()
+    .then((res) => {
+      const patients = res.docs.map((doc) => doc.data());
+      console.log(patients);
+    });
+}
+function getSttafs() {
+  db.collection("staffs")
+    .get()
+    .then((res) => {
+      const staffs = res.docs.map((doc) => doc.data());
+      console.log(staffs);
+    });
+}

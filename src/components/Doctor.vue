@@ -66,7 +66,7 @@
             id="division"
             style="height: 215px; max-height: 215px; overflow-y: scroll"
           >
-            <v-list-item v-for="item in items" :key="item.id">
+            <v-list-item v-for="(item, index) in items" :key="item.id">
               <v-list-item-icon>
                 <v-icon style="color: grey">{{ item.icon }}</v-icon>
               </v-list-item-icon>
@@ -74,7 +74,7 @@
                 <v-list-item-title class="pl-2" style="color: grey"
                   >{{ item.title }}
                   <span style="float: right; color: black">{{
-                    item.point
+                    no_of_doctors[index]
                   }}</span>
                 </v-list-item-title>
               </v-list-item-content>
@@ -114,7 +114,7 @@
       <div class="p-6 second_row">
         <div class="bg-white p-6 shadow-lg flex" style="border-radius: 7px">
           <div class="relative" style="border-radius: 7px; height: 300px">
-            <h1 class="font-bold text-md">AVg Doctor salary per Dept.</h1>
+            <h1 class="font-bold text-md">Avg Doctor salary per Dept.</h1>
             <p class="font-bold text-sm">(In thousands)</p>
 
             <canvas
@@ -156,6 +156,7 @@
 <script>
 import Chart from "chart.js/auto";
 import gsap from "gsap";
+import store from "../store/index.js";
 export default {
   props: ["drawer_state"],
   data() {
@@ -165,34 +166,35 @@ export default {
           title: "Cardiologist",
           icon: "mdi-heart-pulse",
           id: "mdi-heart-pulse1",
-          point: "30",
         },
 
         {
           title: "Neurologist",
           icon: "mdi-brain",
           id: "mdi-heart-pulse2",
-          point: "16",
         },
         {
-          title: "Surger",
-          icon: "mdi-content-cut",
+          title: "Physiatrists",
+          icon: "mdi-needle",
           id: "mdi-content-cut3",
-          point: "26",
+        },
+        {
+          title: "Surgeon",
+          icon: "mdi-content-cut",
+          id: "mdi-content-3",
         },
         {
           title: "Radiologist",
           icon: "mdi-radioactive",
           id: "mdi-radiology-box4",
-          point: "12",
         },
         {
-          title: "Dietary",
+          title: "Bariatrician",
           icon: "mdi-food-croissant",
           id: "mdi-food-croissant4",
-          point: "42",
         },
       ],
+      no_of_doctors: store.state.doctors.doctors_details.no_of_doctors,
       mini: true,
       dropdown: false,
       selectedItem: 0,
@@ -201,16 +203,7 @@ export default {
 
   methods: {
     linechart() {
-      const labels = [
-        "09 am",
-        "10 am",
-        "11 am",
-        "12 am",
-        "2 pm",
-        "3 pm",
-        "4pm",
-      ];
-
+      const labels = store.state.doctors.doctors_details.doctors_apptX;
       const data = {
         labels: labels,
         datasets: [
@@ -218,7 +211,7 @@ export default {
             label: "Number of Appointments",
             backgroundColor: "rgb(255, 99, 132)",
             borderColor: "#D4F773",
-            data: [26, 31, 18, 46, 36, 55, 29],
+            data: store.state.doctors.doctors_details.doctors_apptY,
             lineTension: 0.4,
             fill: {
               target: "origin",
@@ -237,7 +230,7 @@ export default {
           plugins: {
             legend: {
               position: "top",
-              tension: "2",
+              tension: "5",
               align: "start",
               labels: {
                 padding: 30,
@@ -277,7 +270,10 @@ export default {
             borderColor: ["#69F8C3", "#F8699E"],
             hoverBackgroundColor: ["#52F1B6", "#F1528D"],
             hoverBorderColor: ["black", "black"],
-            data: [34, 48],
+            data: [
+              store.state.doctors.doctors_details.male_doctors,
+              store.state.doctors.doctors_details.female_doctors,
+            ],
           },
         ],
       };
@@ -303,7 +299,14 @@ export default {
       new Chart(document.getElementById("doughnut_gender"), config);
     },
     polarDoctorsChart() {
-      const labels = ["Cardiology", "Neurology", "Radiology", "Rehabilitation"];
+      const labels = [
+        "Cardiology",
+        "Neurology",
+        "Rehabilitation",
+        "Surgeon",
+        "Radiology",
+        "Dietary",
+      ];
       const data = {
         labels: labels,
         datasets: [
@@ -312,16 +315,20 @@ export default {
               "rgba(255, 99, 132,0.8)",
               "rgba(75, 192, 192,0.8)",
               "rgba(255, 205, 86,0.8)",
-              "rgba(201, 203, 207,0.8)",
+              "rgba(201, 103, 207,0.8)",
+              "rgba(201, 20, 107,0.8)",
+              "rgba(201, 200, 245,0.8)",
             ],
             hoverBackgroundColor: [
               "rgba(255, 99, 132,1)",
               "rgba(75, 192, 192,1)",
               "rgba(255, 205, 86,1)",
-              "rgba(201, 203, 207,1)",
+              "rgba(201, 103, 207,1)",
+              "rgba(201, 20, 107,1)",
+              "rgba(201, 200, 245,1)",
             ],
             hoverBorderColor: ["black", "black"],
-            data: [25, 48, 15, 20],
+            data: store.state.doctors.doctors_details.doctors_per_department,
           },
         ],
       };
@@ -335,7 +342,7 @@ export default {
               position: "bottom",
               align: "start",
               labels: {
-                padding: 40,
+                padding: 30,
                 usePointStyle: true,
               },
             },
@@ -346,15 +353,43 @@ export default {
       new Chart(document.getElementById("polar_doctors"), config);
     },
     piechart() {
-      const label = ["Cardiology", "Neurology", "Radiology", "Rehabilitation"];
+      const label = [
+        "Cardiology",
+        "Neurology",
+        "Rehabilitation",
+        "Surgeon",
+        "Radiology",
+        "Dietary",
+      ];
       const data = {
         labels: label,
         datasets: [
           {
-            backgroundColor: ["#AE89EC", "yellow", "#C7EC89", "cyan"],
-            data: [100, 125, 80, 110],
-            hoverBorderColor: ["black", "black", "black", "black"],
-            borderColor: ["#AE89EC", "yellow", "#C7EC89", "cyan"],
+            backgroundColor: [
+              "#AE89EC",
+              "yellow",
+              "#C7EC89",
+              "cyan",
+              "black",
+              "red",
+            ],
+            data: store.state.doctors.doctors_details.avg_salaries,
+            hoverBorderColor: [
+              "black",
+              "black",
+              "black",
+              "black",
+              "black",
+              "black",
+            ],
+            borderColor: [
+              "#AE89EC",
+              "yellow",
+              "#C7EC89",
+              "cyan",
+              "black",
+              "red",
+            ],
           },
         ],
       };
@@ -379,25 +414,19 @@ export default {
     },
     barchart() {
       const labels = [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
+        "Cardiology",
+        "Neurology",
+        "Rehabilitation",
+        "Surgeon",
+        "Radiology",
+        "Dietary",
       ];
       const data = {
         labels: labels,
         datasets: [
           {
-            label: "Months",
-            data: [8, 9, 8, 7, 6.5, 8.5, 6, 7, 9.5, 10, 7.5, 8],
+            label: "Doctors",
+            data: store.state.doctors.doctors_details.avg_ratings,
             backgroundColor: [
               "rgba(255, 99, 132, 0.2)",
               "rgba(255, 159, 64, 0.2)",
@@ -405,7 +434,6 @@ export default {
               "rgba(75, 192, 192, 0.2)",
               "rgba(54, 162, 235, 0.2)",
               "rgba(153, 102, 255, 0.2)",
-              "rgba(201, 203, 207, 0.2)",
             ],
             borderColor: [
               "rgb(255, 99, 132)",
@@ -414,7 +442,6 @@ export default {
               "rgb(75, 192, 192)",
               "rgb(54, 162, 235)",
               "rgb(153, 102, 255)",
-              "rgb(201, 203, 207)",
             ],
             borderWidth: 1,
           },
