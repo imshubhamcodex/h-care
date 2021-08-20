@@ -1,13 +1,35 @@
-FROM node:14.17.5-alpine3.12
+FROM ubuntu
 
-WORKDIR /app
 
-COPY package.json /app
+RUN sudo apt-get update
 
-RUN npm install
+RUN sudo apt-get -y install nginx
 
-COPY . /app
+RUN sudo apt-get -y install nodejs
 
-CMD npm run serve
+RUN sudo apt-get -y install npm
 
-EXPOSE 3000
+RUN sudo git clone https://github.com/imshubhamcodex/h-care.git
+
+RUN cd h-care
+
+RUN sudo npm install
+
+RUN sudo npm cache clear --force
+
+RUN sudo npm run build
+
+RUN cd dist
+
+RUN sudo cp -r . /var/www/html
+
+RUN cd /etc/nginx/sites-available
+
+RUN sudo rm -f default
+
+RUN cd /home/ubuntu/h-care/
+
+RUN sudo cp -r default /etc/nginx/sites-available
+ 
+RUN sudo service nginx restart
+
