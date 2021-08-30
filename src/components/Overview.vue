@@ -3,7 +3,7 @@
     <!---first row :start-->
     <div class="grid lg:grid-cols-4">
       <!--polar chart :start-->
-      <div class="p-6 last_row">
+      <div class="p-6 top_row">
         <div class="bg-white p-6 shadow-lg" style="border-radius: 7px">
           <div class="relative">
             <div class="mx-6 pb-6 mt-1">
@@ -30,7 +30,7 @@
         <!-- bar :end-->
       </div>
       <!--Type of dept :start-->
-      <div class="p-6 last_row">
+      <div class="p-6 top_row">
         <div class="bg-white shadow-lg h-full" style="border-radius: 7px">
           <div class="flex">
             <h2 class="font-bold p-6">Types of Departments</h2>
@@ -75,7 +75,7 @@
     <!----row2 starts--->
     <div class="grid lg:grid-cols-4">
       <!---row2col1 starts--->
-      <div class="p-6 last_row">
+      <div class="p-6 second_row">
         <div
           class="bg-white p-6 shadow-lg flex"
           style="border-radius: 7px; background-color: #b0eee9"
@@ -116,7 +116,7 @@
       <!----row2col2 starts--->
 
       <!----row2col3 starts--->
-      <div id="bar_chart_div" class=" col-start-3 col-span-2 p-6 second_row">
+      <div id="bar_chart_div_rating" class=" col-start-3 col-span-2 p-6 second_row">
         <div class="bg-white p-6 shadow-lg flex" style="border-radius: 7px">
           <div  style="border-radius: 7px; height: 300px">
             <h1 class="font-bold text-md">Doctor Avg Rating</h1>
@@ -570,6 +570,9 @@ export default {
     if (screen.width < parseInt(420)) {
       document.getElementById("bar_chart_div").classList.remove("col-start-2");
       document.getElementById("bar_chart_div").classList.remove("col-span-2");
+
+      document.getElementById("bar_chart_div_rating").classList.remove("col-start-3");
+      document.getElementById("bar_chart_div_rating").classList.remove("col-span-2");
     }
 
     let tl = gsap.timeline();
@@ -660,3 +663,70 @@ export default {
 
 };
 </script>
+
+<style scoped>
+@media (max-width: 420px) {
+  .top_row {
+    margin-left: -17px !important;
+  }
+  .second_row {
+    margin-left: -17px !important;
+  }
+  .last_row {
+    margin-left: -8px !important;
+  }
+  #sec_row {
+    flex-direction: column;
+  }
+  #sec_row_div {
+    margin-top: 30px;
+  }
+
+  #doughnut_gender {
+    margin-left: -17px;
+  }
+  #bar_chart_div{
+    margin-left: 0px;
+  }
+
+  #doughnut_gender,
+  #polarchart,
+  #piechart {
+    margin-left: 0px;
+  }
+
+  #v_icon_gender {
+    margin-left: -4px;
+    margin-top: -1px;
+  }
+}
+
+@media (max-width: 360px) {
+  .second_row,
+  .top_row {
+    margin-left: -19px !important;
+  }
+  .top_row {
+    max-width: 340px;
+  }
+  .second_row {
+    max-width: 340px;
+  }
+  .last_row {
+    margin-left: -10spx !important;
+  }
+
+  #doughnut_gender,
+  #polarchart,
+  #piechart {
+    margin-left: -25px;
+  }
+  #v_icon_gender {
+    margin-left: 0px;
+    margin-top: -2px;
+  }
+  #bar_chart_div{
+    margin-left: -5px;
+  }
+}
+</style>

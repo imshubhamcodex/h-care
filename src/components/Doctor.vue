@@ -261,7 +261,7 @@ export default {
     },
     doughnutChartGender() {
       // ploting  graph
-      const labels = ["Number of Male Patients", "Number of Female Patients"];
+      const labels = ["Number of Male Doctors", "Number of Female Doctors"];
       const data = {
         labels: labels,
         datasets: [
