@@ -690,7 +690,7 @@ export default {
     margin-top: 30px;
   }
 
-  #gender_div{
+  #gender_div {
     max-width: 345px;
   }
 

@@ -12,7 +12,7 @@ const routes = [
   {
     path: "/db",
     name: "db",
-    component: () => import("../views/DB.vue")
+    component: () => import("../views/DB.vue"),
   },
 ];
 

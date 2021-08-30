@@ -116,9 +116,12 @@
       <!----row2col2 starts--->
 
       <!----row2col3 starts--->
-      <div id="bar_chart_div_rating" class=" col-start-3 col-span-2 p-6 second_row">
+      <div
+        id="bar_chart_div_rating"
+        class="col-start-3 col-span-2 p-6 second_row"
+      >
         <div class="bg-white p-6 shadow-lg flex" style="border-radius: 7px">
-          <div  style="border-radius: 7px; height: 300px">
+          <div style="border-radius: 7px; height: 300px">
             <h1 class="font-bold text-md">Doctor Avg Rating</h1>
 
             <canvas
@@ -309,8 +312,6 @@ export default {
     };
   },
   methods: {
-    
-
     polarDoctorsChart() {
       const labels = ["Cardiology", "Neurology", "Radiology", "Rehabilitation"];
       const data = {
@@ -413,16 +414,15 @@ export default {
               },
             },
           },
-          "maintainAspectRatio": false
+          maintainAspectRatio: false,
         },
       };
       let bar_chart = new Chart(document.getElementById("bar"), config);
 
-      if(screen.width <= parseInt(370)){
-        bar_chart.resize(240,310);
-      }
-      else if(screen.width <= parseInt(420)){
-        bar_chart.resize(278,380);
+      if (screen.width <= parseInt(370)) {
+        bar_chart.resize(240, 310);
+      } else if (screen.width <= parseInt(420)) {
+        bar_chart.resize(278, 380);
       }
     },
 
@@ -571,8 +571,12 @@ export default {
       document.getElementById("bar_chart_div").classList.remove("col-start-2");
       document.getElementById("bar_chart_div").classList.remove("col-span-2");
 
-      document.getElementById("bar_chart_div_rating").classList.remove("col-start-3");
-      document.getElementById("bar_chart_div_rating").classList.remove("col-span-2");
+      document
+        .getElementById("bar_chart_div_rating")
+        .classList.remove("col-start-3");
+      document
+        .getElementById("bar_chart_div_rating")
+        .classList.remove("col-span-2");
     }
 
     let tl = gsap.timeline();
@@ -625,7 +629,6 @@ export default {
         document.getElementById("piechart").style.width = "250px";
         document.getElementById("bar").style.width = "480px";
         document.getElementById("barchart2").style.width = "500px";
-        
 
         document.getElementById("piechart").style.height = "250px";
         document.getElementById("bar").style.height = "370px";
@@ -634,7 +637,6 @@ export default {
         document.getElementById("division").style.height = "230px";
         document.getElementById("pt").style.paddingLeft = "10px";
 
-       
         document.getElementById("polarheading").style.marginLeft = "-27px";
         // document.getElementById("polar_doctors").style.marginLeft = "-55px";
         document.getElementById("polarchart").style.marginLeft = "-50px";
@@ -644,7 +646,6 @@ export default {
         document.getElementById("piechart").style.width = "290px";
         document.getElementById("bar").style.width = "570px";
         document.getElementById("barchart2").style.width = "550px";
-       
 
         document.getElementById("piechart").style.height = "270px";
         document.getElementById("bar").style.height = "350px";
@@ -655,12 +656,10 @@ export default {
 
         document.getElementById("v_icon_gender").style.top = "40%";
 
-        
         document.getElementById("polarheading").style.paddingLeft = "10px";
       }
     },
   },
-
 };
 </script>
 
@@ -685,7 +684,7 @@ export default {
   #doughnut_gender {
     margin-left: -17px;
   }
-  #bar_chart_div{
+  #bar_chart_div {
     margin-left: 0px;
   }
 
@@ -725,7 +724,7 @@ export default {
     margin-left: 0px;
     margin-top: -2px;
   }
-  #bar_chart_div{
+  #bar_chart_div {
     margin-left: -5px;
   }
 }

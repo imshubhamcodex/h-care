@@ -432,7 +432,7 @@ export default {
             this.updated_search_list.push(ele);
           }
         });
-      }else{
+      } else {
         this.updated_search_list = [];
         this.show_search_list = false;
       }
