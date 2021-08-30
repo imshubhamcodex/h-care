@@ -10,6 +10,7 @@
       <template>
         <v-toolbar elevation="0" flat style="z-index: 9">
           <v-text-field
+            @keyup="filterList"
             flat
             hide-details
             label="Search..."
@@ -45,7 +46,7 @@
             <v-list-item-group v-model="selectedItem" color="primary">
               <v-list-item
                 @click="dropdown = !dropdown"
-                v-for="(item, i) in items"
+                v-for="(item, i) in droplist"
                 :key="i"
               >
                 <v-list-item-icon>
@@ -62,6 +63,50 @@
         </v-card>
       </template>
       <!--dropdown panel :end-->
+
+      <!--search panel :start-->
+      <template>
+        <v-card
+          elevation="1"
+          v-if="show_search_list"
+          style="
+            position: absolute;
+            top: 56px;
+            left: 0px;
+            z-index: 999;
+            overflow-y: auto;
+          "
+          class="mx-auto"
+          min-width="650"
+          max-height="220"
+        >
+          <v-list style="background: rgb(236, 240, 241)">
+            <v-list-item-group>
+              <v-list-item
+                v-for="(item, i) in updated_search_list"
+                :key="i"
+                elevation="1"
+              >
+                <v-list-item-icon>
+                  <v-icon>{{ item.icon }}</v-icon>
+                </v-list-item-icon>
+                <v-list-item-content>
+                  <v-list-item-title
+                    class="pl-2"
+                    @click="goToNav(item.item_index)"
+                    >{{ item.title }}
+                    <span class="float-right text-sm italic mr-2">{{
+                      item.last
+                    }}</span></v-list-item-title
+                  >
+                </v-list-item-content>
+              </v-list-item>
+            </v-list-item-group>
+          </v-list>
+        </v-card>
+      </template>
+      <!--search panel :end-->
+
       <Overview v-if="overview" :drawer_state="mini" />
       <AddPatient v-if="add_patient" />
       <AddDoctor v-if="add_doctor" />
@@ -261,19 +306,137 @@ export default {
           id: "mdi-doctor5",
           color: "sienna",
         },
+      ],
+      droplist: [
         {
-          title: "History",
-          icon: "mdi-history",
-          id: "mdi-history6",
-          color: "blue",
+          title: "Account",
+          icon: "mdi-account",
+          id: "menu",
+        },
+        {
+          title: "Logout",
+          icon: "mdi-login",
+          id: "menu-history6",
         },
       ],
+      search_list: [
+        {
+          title: "Add Patients",
+          icon: "mdi-account-clock",
+          id: "menu-account-0",
+          last: "Form for adding patients details",
+          item_index: 1,
+        },
+        {
+          title: "Add Doctor",
+          icon: "mdi-hospital-box",
+          id: "menu-hospital-0",
+          last: "Form for adding doctor details",
+          item_index: 2,
+        },
+        {
+          title: "Patients by Gender",
+          icon: "mdi-gender-male-female",
+          id: "menu-gen",
+          last: "Number of male and female patients",
+          item_index: 3,
+        },
+        {
+          title: "Patients by Disease",
+          icon: "mdi-alert",
+          id: "menu-alert6",
+          last: "Number of patients on basis of disease",
+          item_index: 3,
+        },
+        {
+          title: "Patients by Division",
+          icon: "mdi-vector-intersection",
+          id: "menu-vector-intersection",
+          last: "Number of patients on basis of division",
+          item_index: 3,
+        },
+        {
+          title: "Patients admit trend",
+          icon: "mdi-chart-bar",
+          id: "menu-chart-bar",
+          last: "Visual representation of trend",
+          item_index: 3,
+        },
+        {
+          title: "Doctors in departments",
+          icon: "mdi-doctor",
+          id: "menu-doctor-0",
+          last: "Number of doctors on basis of departments",
+          item_index: 4,
+        },
+        {
+          title: "Doctor patient trend",
+          icon: "mdi-chart-scatter-plot",
+          id: "menu-chart-scatter-plot",
+          last: "Visual representation of trend",
+          item_index: 4,
+        },
+        {
+          title: "Types of Departments",
+          icon: "mdi-human-queue",
+          id: "menu-human-queue",
+          last: "Different department avail. in hospital",
+          item_index: 4,
+        },
+        {
+          title: "Doctors by Division",
+          icon: "mdi-login",
+          id: "menu-history6",
+          last: "Number of doctors on basis of division",
+          item_index: 5,
+        },
+        {
+          title: "Avg Doctor salary per Dept.",
+          icon: "mdi-cash-multiple",
+          id: "menu-cash-multiple",
+          last: "Doctor's salaries",
+          item_index: 5,
+        },
+        {
+          title: "Avg Doctor Rating",
+          icon: "mdi-star-circle",
+          id: "menu-star-circle",
+          last: "Doctor's rating",
+          item_index: 5,
+        },
+      ],
+      updated_search_list: [],
+      show_search_list: false,
       mini: true,
       dropdown: false,
       selectedItem: 0,
     };
   },
   methods: {
+    goToNav(index) {
+      this.navigate(this.items[index]);
+      this.updated_search_list = [];
+      this.show_search_list = false;
+    },
+    filterList(e) {
+      if (e.target.value.replace(/\s+/g, "") !== "") {
+        this.updated_search_list = [];
+        this.show_search_list = true;
+        this.search_list.forEach((ele) => {
+          if (
+            ele.title
+              .replace(/\s+/g, "")
+              .toLowerCase()
+              .includes(e.target.value.replace(/\s+/g, "").toLowerCase())
+          ) {
+            this.updated_search_list.push(ele);
+          }
+        });
+      } else {
+        this.updated_search_list = [];
+        this.show_search_list = false;
+      }
+    },
     hideAll() {
       this.overview = false;
       this.add_patient = false;
