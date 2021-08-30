@@ -3,6 +3,22 @@
     <router-view />
   </div>
 </template>
+<script>
+import {
+  getDoctors,
+  getDepartments,
+  getPatients,
+  getSttafs,
+} from "../firebase";
+export default {
+  mounted() {
+    getDoctors();
+    getDepartments();
+    getPatients();
+    getSttafs();
+  },
+};
+</script>
 
 <style>
 body {

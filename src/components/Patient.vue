@@ -132,9 +132,12 @@
         <div
           class="bg-white p-6 shadow-lg flex second_row"
           style="border-radius: 7px"
+          id="sec_row"
         >
-          <canvas height="300px" width="600px" id="bar" class="mr-5"></canvas>
-          <div class="relative second_row">
+          <div>
+            <canvas height="300px" width="600px" id="bar" class="mr-5"></canvas>
+          </div>
+          <div class="relative second_row" id="sec_row_div">
             <div style="float: right" class="mx-6 pb-6 mt-1">
               Show
               <span class="font-bold"
@@ -163,7 +166,7 @@
           </div>
         </div>
       </div>
-      <div class="p-6 second_row">
+      <div class="p-6 second_row" id="gender_div">
         <div class="bg-white p-6 shadow-lg" style="border-radius: 7px">
           <div class="relative">
             <div class="mx-6 pb-6 mt-1">
@@ -176,7 +179,7 @@
               id="doughnut_gender"
             ></canvas>
             <v-icon
-              class=""
+              id="v_icon_gender"
               style="
                 top: 40.5%;
                 left: 50%;
@@ -193,13 +196,13 @@
     <!---second row :end-->
 
     <!---third row :start-->
-    <div class="grid lg:grid-cols-4">
-      <div class="col-start-1 col-span-2 p-6">
+    <div class="grid lg:grid-cols-4 third_row">
+      <div id="linechart_div" class="col-start-1 col-span-2 p-6">
         <div class="bg-white p-6 shadow-lg flex" style="border-radius: 7px">
           <canvas height="300px" width="550px" id="linechart"></canvas>
         </div>
       </div>
-      <div class="col-start-3 col-span-1 p-6">
+      <div class="p-6">
         <div class="bg-white shadow-lg" style="border-radius: 7px">
           <div class="flex">
             <h2 class="font-bold p-6">Patients by Division</h2>
@@ -239,7 +242,7 @@
         </div>
       </div>
       <!----->
-      <div class="col-start-4 col-span-1 p-6">
+      <div class="p-6">
         <div
           class="shadow-lg"
           id="patient_by_disease"
@@ -369,8 +372,13 @@ export default {
           maintainAspectRatio: false,
         },
       };
-      var myChart = new Chart(document.getElementById("bar"), config);
-      console.log(myChart);
+      let bar_chart = new Chart(document.getElementById("bar"), config);
+
+      if (screen.width <= parseInt(370)) {
+        bar_chart.resize(240, 300);
+      } else if (screen.width <= parseInt(420)) {
+        bar_chart.resize(278, 350);
+      }
     },
     doughnutChart() {
       // ploting  graph
@@ -495,7 +503,13 @@ export default {
         },
       };
 
-      new Chart(document.getElementById("linechart"), config);
+      let line_chart = new Chart(document.getElementById("linechart"), config);
+
+      if (screen.width <= parseInt(370)) {
+        line_chart.resize(240, 300);
+      } else if (screen.width <= parseInt(420)) {
+        line_chart.resize(278, 350);
+      }
     },
     piechart() {
       const label = ["Migrain", "Tuberculosis", "Stones", "Anaemia"];
@@ -514,7 +528,8 @@ export default {
         type: "pie",
         data: data,
         options: {
-          responsive: true,
+          responsive: screen.width <= 420 ? false : true,
+          maintainAspectRatio: screen.width <= 420 ? false : true,
           plugins: {
             legend: {
               display: true,
@@ -526,10 +541,20 @@ export default {
           },
         },
       };
-      new Chart(document.getElementById("piechart"), config);
+      let pie_chart = new Chart(document.getElementById("piechart"), config);
+      if (screen.width <= parseInt(370)) {
+        pie_chart.resize(200, 250);
+      } else if (screen.width <= parseInt(420)) {
+        pie_chart.resize(340, 270);
+      }
     },
   },
   mounted() {
+    if (screen.width < parseInt(420)) {
+      document.getElementById("linechart_div").classList.remove("col-start-1");
+      document.getElementById("linechart_div").classList.remove("col-span-2");
+    }
+
     let tl = gsap.timeline();
     tl.fromTo(
       ".second_row",
@@ -618,5 +643,64 @@ export default {
 <style scoped>
 .top_row {
   opacity: 0;
+}
+
+@media (max-width: 420px) {
+  .top_row {
+    margin-left: -8px !important;
+  }
+  .second_row {
+    margin-left: -8px !important;
+  }
+  .third_row {
+    margin-left: -17px !important;
+  }
+  #sec_row {
+    flex-direction: column;
+  }
+  #sec_row_div {
+    margin-top: 30px;
+  }
+
+  #doughnut_gender {
+    margin-left: -17px;
+  }
+
+  #v_icon_gender {
+    margin-left: -4px;
+    margin-top: -1px;
+  }
+}
+
+@media (max-width: 360px) {
+  .top_row {
+    margin-left: -10px !important;
+  }
+
+  .second_row {
+    margin-left: -21.5px !important;
+  }
+  .third_row {
+    margin-left: -20px !important;
+  }
+  #sec_row {
+    flex-direction: column;
+  }
+  #sec_row_div {
+    margin-top: 30px;
+  }
+
+  #gender_div {
+    max-width: 345px;
+  }
+
+  #doughnut_gender {
+    margin-left: -21.5px;
+  }
+
+  #v_icon_gender {
+    margin-left: -0px;
+    margin-top: -1px;
+  }
 }
 </style>
