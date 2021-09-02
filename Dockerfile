@@ -1,13 +1,12 @@
-FROM node:14.17.5-alpine3.12
+FROM nginx:latest
 
-WORKDIR /app
+WORKDIR /usr/share/nginx/html
 
-COPY package.json /app
+COPY ./ ./
 
-RUN npm install
 
-COPY . /app
 
-CMD npm run serve
 
-EXPOSE 3000
+
+
+
